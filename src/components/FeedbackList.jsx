@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import { motion, AnimatePresence } from 'framer-motion';
+
 import FeedbackItem from './FeedbackItem';
 
 const FeedbackList = ({ feedbacks, closeHandler }) => {
@@ -9,15 +11,26 @@ const FeedbackList = ({ feedbacks, closeHandler }) => {
 	}
 
 	const feedbackList = feedbacks.map((feedback) => (
-		<FeedbackItem
+		<motion.div
 			key={feedback.id}
-			id={feedback.id}
-			rating={feedback.rating}
-			text={feedback.text}
-			closeHandler={closeHandler}
-		/>
+			initial={{ opacity: 0 }}
+			animate={{ opacity: 1 }}
+			exit={{ opacity: 0 }}
+		>
+			<FeedbackItem
+				key={feedback.id}
+				id={feedback.id}
+				rating={feedback.rating}
+				text={feedback.text}
+				closeHandler={closeHandler}
+			/>
+		</motion.div>
 	));
-	return <div className='feedback-list'>{feedbackList}</div>;
+	return (
+		<div className='feedback-list'>
+			<AnimatePresence>{feedbackList}</AnimatePresence>
+		</div>
+	);
 };
 
 FeedbackList.propTypes = {
