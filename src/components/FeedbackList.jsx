@@ -2,13 +2,16 @@ import React, { useContext } from 'react';
 
 import { motion, AnimatePresence } from 'framer-motion';
 
+import Spinner from './shared/Spinner';
 import FeedbackContext from './context/feedback-context';
 import FeedbackItem from './FeedbackItem';
 
 const FeedbackList = () => {
-	const { feedbacks } = useContext(FeedbackContext);
+	const { feedbacks, isLoading } = useContext(FeedbackContext);
 
-	if (!feedbacks || feedbacks.length === 0) {
+	console.log(isLoading);
+
+	if (!isLoading && (!feedbacks || feedbacks.length === 0)) {
 		return <p>No feedbacks yet.</p>;
 	}
 
@@ -29,7 +32,8 @@ const FeedbackList = () => {
 	));
 	return (
 		<div className='feedback-list'>
-			<AnimatePresence>{feedbackList}</AnimatePresence>
+			{isLoading && <Spinner />}
+			{!isLoading && <AnimatePresence>{feedbackList}</AnimatePresence>}
 		</div>
 	);
 };

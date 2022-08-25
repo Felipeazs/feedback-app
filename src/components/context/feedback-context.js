@@ -1,11 +1,10 @@
-import { createContext, useState } from 'react';
+import { createContext, useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-
-import FeedbackData from '../../data/FeedbackData';
 
 const FeedbackContext = createContext({
 	feedbacks: [],
 	editedFeedback: {},
+	isLoading: Boolean,
 	deleteFeedback: (feedbackId) => {},
 	addFeedback: (newFeedback) => {},
 	updateFeedback: (feedback) => {},
@@ -13,8 +12,26 @@ const FeedbackContext = createContext({
 });
 
 export const FeedbackProvider = ({ children }) => {
-	const [feedbacks, setFeedbacks] = useState(FeedbackData);
+	const [isLoading, setIsLoading] = useState(true);
+	const [feedbacks, setFeedbacks] = useState([]);
 	const [editedFeedback, setEditedFeedback] = useState({ item: {}, edit: false });
+
+	useEffect(() => {
+		fetchFeedbacks();
+	}, []);
+
+	const fetchFeedbacks = async () => {
+		const response = await fetch('http://localhost:5002/feedback?_sort=id&order=desc');
+
+		if (!response.ok) {
+			setIsLoading(false);
+			throw new Error('Could not connect to the database');
+		}
+
+		const data = await response.json();
+		setIsLoading(false);
+		setFeedbacks(data);
+	};
 
 	const deleteFeedback = (feedbackId) => {
 		if (window.confirm('Are you sure you want to delete?')) {
@@ -47,6 +64,7 @@ export const FeedbackProvider = ({ children }) => {
 			value={{
 				feedbacks,
 				editedFeedback,
+				isLoading,
 				deleteFeedback,
 				addFeedback,
 				editFeedback,
