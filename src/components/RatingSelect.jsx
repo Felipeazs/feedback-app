@@ -1,8 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
+import FeedbackContext from './context/feedback-context';
+
 const RatingSelect = ({ selectRating }) => {
+	const { editedFeedback } = useContext(FeedbackContext);
+	
 	const [selected, setSelected] = useState(10);
+
+	useEffect(() => {
+		if (editedFeedback.edit === true) {
+			setSelected(editedFeedback.item.rating);
+		}
+	}, [editedFeedback]);
 
 	const handleChange = (event) => {
 		setSelected(+event.target.value); // + sign converts string to number
