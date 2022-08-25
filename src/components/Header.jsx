@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const Header = ({ text, bgColor, textColor }) => {
+const Header = ({ appTitle, bgColor, textColor }) => {
 	const headerStyles = {
 		backgroundColor: bgColor,
 		color: textColor,
@@ -9,7 +9,7 @@ const Header = ({ text, bgColor, textColor }) => {
 	return (
 		<header style={headerStyles}>
 			<div className='container'>
-				<h2>{text}</h2>
+				<h2>{appTitle}</h2>
 			</div>
 		</header>
 	);
@@ -17,7 +17,7 @@ const Header = ({ text, bgColor, textColor }) => {
 
 //In case no props is passed, set default props:
 Header.defaultProps = {
-	text: 'Feedback Ui',
+	appTitle: 'Feedback Ui',
 	bgColor: 'rgba(0, 0, 0, 0.4)',
 	textColor: '#ff6a95',
 };

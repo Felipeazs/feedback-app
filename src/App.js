@@ -1,38 +1,30 @@
-import React, { Fragment, useState } from 'react';
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 import Header from './components/Header';
-import FeedbackList from './components/FeedbackList';
-import FeedbackData from './data/FeedbackData';
-import FeedbackStats from './components/FeedbackStats';
-import FeedbackForm from './components/FeedbackForm';
+import HomePage from './pages/HomePage';
+import AboutPage from './pages/AboutPage';
+import AboutIconLink from './components/AboutIconLink';
 
 const App = ({ name }) => {
-	const [feedbacks, setFeedbacks] = useState(FeedbackData);
-	const title = name;
-
-	const deleteItem = (itemId) => {
-		if (window.confirm('Are you sure you want to delete?')) {
-			setFeedbacks(feedbacks.filter((el) => el.id !== itemId));
-		}
-	};
-
-	const addItem = (newFeedback) => {
-		console.log(newFeedback);
-		setFeedbacks((prevState) => [newFeedback, ...prevState]);
-	};
-
+	const appTitle = name;
 	return (
-		<Fragment>
-			<Header text={title} />
+		<Router>
+			<Header appTitle={appTitle} />
 			<div className='container'>
-				<FeedbackForm addFeedback={addItem} />
-				<FeedbackStats feedbacks={feedbacks} />
-				<FeedbackList
-					feedbacks={feedbacks}
-					closeHandler={deleteItem}
-				/>
+				<Routes>
+					<Route
+						path='/'
+						element={<HomePage />}
+					></Route>
+					<Route
+						path='/about'
+						element={<AboutPage />}
+					/>
+				</Routes>
+				<AboutIconLink />
 			</div>
-		</Fragment>
+		</Router>
 	);
 };
 
