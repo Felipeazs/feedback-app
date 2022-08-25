@@ -16,11 +16,16 @@ const App = ({ name }) => {
 		}
 	};
 
+	const addItem = (newFeedback) => {
+		console.log(newFeedback);
+		setFeedbacks((prevState) => [newFeedback, ...prevState]);
+	};
+
 	return (
 		<Fragment>
 			<Header text={title} />
 			<div className='container'>
-				<FeedbackForm />
+				<FeedbackForm addFeedback={addItem} />
 				<FeedbackStats feedbacks={feedbacks} />
 				<FeedbackList
 					feedbacks={feedbacks}
