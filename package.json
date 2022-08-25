@@ -2,6 +2,7 @@
 	"name": "01-feedback-app",
 	"version": "0.1.0",
 	"private": true,
+	"proxy": "http://localhost:5002",
 	"dependencies": {
 		"@testing-library/jest-dom": "^5.16.5",
 		"@testing-library/react": "^13.3.0",
@@ -22,7 +23,7 @@
 		"build": "react-scripts build",
 		"test": "react-scripts test",
 		"eject": "react-scripts eject",
-		"server": "json-server --watch db.json --port 5002",
+		"server": "json-server --watch db.json --id id --port 5002",
 		"dev": "concurrently \"npm run server\" \"npm start\""
 	},
 	"eslintConfig": {

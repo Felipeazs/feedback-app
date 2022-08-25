@@ -9,8 +9,6 @@ import FeedbackItem from './FeedbackItem';
 const FeedbackList = () => {
 	const { feedbacks, isLoading } = useContext(FeedbackContext);
 
-	console.log(isLoading);
-
 	if (!isLoading && (!feedbacks || feedbacks.length === 0)) {
 		return <p>No feedbacks yet.</p>;
 	}

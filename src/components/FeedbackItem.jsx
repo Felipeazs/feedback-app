@@ -42,7 +42,7 @@ const FeedbackItem = ({ id, rating, text }) => {
 };
 
 FeedbackItem.propTypes = {
-	id: PropTypes.string.isRequired,
+	id: PropTypes.number.isRequired,
 	rating: PropTypes.number.isRequired,
 	text: PropTypes.string.isRequired,
 };

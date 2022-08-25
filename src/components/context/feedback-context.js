@@ -1,5 +1,4 @@
 import { createContext, useEffect, useState } from 'react';
-import { v4 as uuidv4 } from 'uuid';
 
 const FeedbackContext = createContext({
 	feedbacks: [],
@@ -21,7 +20,7 @@ export const FeedbackProvider = ({ children }) => {
 	}, []);
 
 	const fetchFeedbacks = async () => {
-		const response = await fetch('http://localhost:5002/feedback?_sort=id&order=desc');
+		const response = await fetch('/feedback?_sort=id&_order=desc');
 
 		if (!response.ok) {
 			setIsLoading(false);
@@ -33,15 +32,33 @@ export const FeedbackProvider = ({ children }) => {
 		setFeedbacks(data);
 	};
 
-	const deleteFeedback = (feedbackId) => {
+	const deleteFeedback = async (feedbackId) => {
 		if (window.confirm('Are you sure you want to delete?')) {
-			setFeedbacks(feedbacks.filter((el) => el.id !== feedbackId));
+			const response = await fetch(`/feedback/${feedbackId}`, {
+				method: 'DELETE',
+			});
+
+			if (!response.ok) {
+				throw new Error('Could not connect to database');
+			}
+
+			fetchFeedbacks();
 		}
 	};
 
-	const addFeedback = (newFeedback) => {
-		newFeedback = { ...newFeedback, id: uuidv4() };
-		setFeedbacks((prevState) => [newFeedback, ...prevState]);
+	const addFeedback = async (newFeedback) => {
+		const response = await fetch('/feedback', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify(newFeedback),
+		});
+
+		if (!response.ok) {
+			throw new Error('Could not connect to data base');
+		}
+
+		const data = await response.json();
+		setFeedbacks((prevState) => [data, ...prevState]);
 	};
 
 	const editFeedback = (feedback) => {
@@ -51,10 +68,24 @@ export const FeedbackProvider = ({ children }) => {
 		});
 	};
 
-	const updateFeedback = (updatedFeedback) => {
+	const updateFeedback = async (updatedFeedback) => {
+		const response = await fetch(`/feedback/${updatedFeedback.id}`, {
+			method: 'PUT',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify(updatedFeedback),
+		});
+
+		if (!response.ok) {
+			throw new Error('Could not connect to database');
+		}
+
+		const data = await response.json();
+
 		setFeedbacks(
-			feedbacks.map((item) =>
-				item.id === updatedFeedback.id ? { ...item, ...updatedFeedback } : item,
+			feedbacks.map((feedback) =>
+				feedback.id === data.id ? { ...feedback, ...data } : feedback,
 			),
 		);
 	};
