@@ -3,6 +3,7 @@ import React, { Fragment, useState } from 'react';
 import Header from './components/Header';
 import FeedbackList from './components/FeedbackList';
 import FeedbackData from './data/FeedbackData';
+import FeedbackStats from './components/FeedbackStats';
 
 const App = ({ name }) => {
 	const [feedbacks, setFeedbacks] = useState(FeedbackData);
@@ -18,6 +19,7 @@ const App = ({ name }) => {
 		<Fragment>
 			<Header text={title} />
 			<div className='container'>
+				<FeedbackStats feedbacks={feedbacks} />
 				<FeedbackList
 					feedbacks={feedbacks}
 					closeHandler={deleteItem}
