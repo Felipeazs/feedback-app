@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react';
 import Header from './components/Header';
+import FeedbackItem from './components/FeedbackItem';
 
 const App = ({ name }) => {
 	const title = name;
@@ -8,7 +9,7 @@ const App = ({ name }) => {
 		<Fragment>
 			<Header />
 			<div className='container'>
-				<h1>{title}</h1>
+				<FeedbackItem />
 			</div>
 		</Fragment>
 	);
