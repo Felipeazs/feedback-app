@@ -7,19 +7,19 @@ import FeedbackContext from './context/feedback-context';
 import Card from './shared/Card';
 
 const FeedbackItem = ({ id, rating, text }) => {
-	const { deleteFeedback, updateFeedback } = useContext(FeedbackContext);
+	const { deleteFeedback, editFeedback } = useContext(FeedbackContext);
 
 	const deleteHandler = () => {
 		deleteFeedback(id);
 	};
-	const updateHandler = () => {
+	const editHandler = () => {
 		const editedFeedback = {
 			id,
 			rating,
 			text,
 		};
 
-		updateFeedback(editedFeedback);
+		editFeedback(editedFeedback);
 	};
 	return (
 		<Card>
@@ -32,7 +32,7 @@ const FeedbackItem = ({ id, rating, text }) => {
 			</button>
 			<button
 				className='edit'
-				onClick={updateHandler}
+				onClick={editHandler}
 			>
 				<FaEdit color='purple' />
 			</button>

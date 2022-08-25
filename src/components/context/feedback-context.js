@@ -5,10 +5,11 @@ import FeedbackData from '../../data/FeedbackData';
 
 const FeedbackContext = createContext({
 	feedbacks: [],
+	editedFeedback: {},
 	deleteFeedback: (feedbackId) => {},
 	addFeedback: (newFeedback) => {},
 	updateFeedback: (feedback) => {},
-	editedFeedback: {},
+	editFeedback: (feedback) => {},
 });
 
 export const FeedbackProvider = ({ children }) => {
@@ -26,16 +27,31 @@ export const FeedbackProvider = ({ children }) => {
 		setFeedbacks((prevState) => [newFeedback, ...prevState]);
 	};
 
-	const updateFeedback = (feedback) => {
+	const editFeedback = (feedback) => {
 		setEditedFeedback({
 			item: feedback,
 			edit: true,
 		});
 	};
 
+	const updateFeedback = (updatedFeedback) => {
+		setFeedbacks(
+			feedbacks.map((item) =>
+				item.id === updatedFeedback.id ? { ...item, ...updatedFeedback } : item,
+			),
+		);
+	};
+
 	return (
 		<FeedbackContext.Provider
-			value={{ feedbacks, deleteFeedback, addFeedback, updateFeedback, editedFeedback }}
+			value={{
+				feedbacks,
+				editedFeedback,
+				deleteFeedback,
+				addFeedback,
+				editFeedback,
+				updateFeedback,
+			}}
 		>
 			{children}
 		</FeedbackContext.Provider>
