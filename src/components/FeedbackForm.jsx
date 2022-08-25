@@ -1,13 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import PropTypes from 'prop-types';
-import { v4 as uuidv4 } from 'uuid';
 
 import Card from './shared/Card';
 import Button from './shared/Button';
 
+import FeedbackContext from './context/feedback-context';
 import RatingSelect from './RatingSelect';
 
-const FeedbackForm = ({ addFeedback }) => {
+const FeedbackForm = () => {
+	const { addFeedback } = useContext(FeedbackContext);
+
 	const [text, setText] = useState('');
 	const [rating, setRating] = useState(10);
 	const [btnDisabled, setBtnDisabled] = useState(true);
@@ -36,15 +38,14 @@ const FeedbackForm = ({ addFeedback }) => {
 		event.preventDefault();
 		if (text.trim().length > 10) {
 			const newFeedback = {
-				id: uuidv4(),
 				text,
 				rating,
 			};
 
 			addFeedback(newFeedback);
+			setText('');
+			setBtnDisabled(true);
 		}
-
-		setText('');
 	};
 
 	return (
